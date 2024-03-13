@@ -1,5 +1,7 @@
 from scipy import signal as ss
 from plotly import graph_objects as go
+from scipy.special import voigt_profile
+from scipy.optimize import curve_fit
 import pandas as pd
 import numpy as np
 
@@ -58,3 +60,16 @@ class signal_processing:
         }
 
         return peaks_information
+
+    def voigt(x:list, *pars):
+        y = 0
+        
+        for i in range(0, len(pars), 4):
+            A0 = pars[i]
+            xc = pars[i + 1]
+            sigma = pars[i + 2]
+            gamma = pars[i + 3]
+    
+            y += A0 * voigt_profile(x-xc, sigma, gamma)
+    
+        return y
